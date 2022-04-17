@@ -16,5 +16,13 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
     {
         GetComponent<SpriteRenderer>().color = Color.white;
     }
+
+    // Method - Drag the bird with the mouse
+    private void OnMouseDrag() 
+    {   
+        Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = new Vector3(newPosition.x, newPosition.y);
+    }
+}
 }
 
