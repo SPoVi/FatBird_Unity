@@ -1,0 +1,1 @@
+- FatBir class: change color when click on
