@@ -31,6 +31,13 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
     // Method - Gets call in a loop
     private void Update() {
 
+        // Render a Line
+        GetComponent<LineRenderer>().SetPosition(0, transform.position);
+        GetComponent<LineRenderer>().SetPosition(1, _initialPosition);
+        
+
+
+        // Velocity control
         if (_birdWasLaunched &&
             GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1) // very slowly movement
         {
@@ -52,7 +59,8 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
     // Method - Gets call every time we click on the bird
     private void OnMouseDown() 
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        GetComponent<SpriteRenderer>().color = Color.red;   // Change color of bird
+        GetComponent<LineRenderer>().enabled = true;        // Make visible de rendered line
     }
 
     // Method - Gets call every time we stop clicking on the bird
@@ -67,6 +75,8 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
         GetComponent<Rigidbody2D>().gravityScale =1;
         // Set to true that bird is launched
         _birdWasLaunched = true;
+        // Make invisible the rendered line
+        GetComponent<LineRenderer>().enabled = false;
 
     }
 
@@ -77,5 +87,6 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
         transform.position = new Vector3(newPosition.x, newPosition.y);
     }
 }
+
 
 
