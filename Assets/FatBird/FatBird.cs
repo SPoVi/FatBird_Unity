@@ -5,10 +5,23 @@ using UnityEngine;
 // Name class must match filename
 public class FatBird : MonoBehaviour // reuse Monobehaviour
 {
-    Vector3 _initialPosition; // _ means that is for private use
+    // ------------ GLOBAL VARS ----------------------
+    Vector3 _initialPosition;                                   // _ means that is for private use
+    private bool _birdWasLaunched;                              // By default = False
+    private float _timeSittingAround;                           // Frames / sec
 
-    [SerializeField] private float _launchPower = 600;       // Private - vel bird launched
-        // SerializeField allows to modify param in Unity
+    // SerializeField allows to modify param in Unity
+    [SerializeField] private float _launchPower = 500;          // Private - vel bird launched
+        
+
+    // Margins of movement to reset position - private (underscore)
+    int _horizontalLeft = -10;
+    int _horizontalright = 10;
+    int _verticalUp = 10;
+    int _verticalDown = -10;
+    // Max velocity bird can get
+    int _maxTimeSittingAround = 3;
+
 
     // Method - When program start save initial position to reuse later
     private void Awake() {
@@ -18,7 +31,20 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
     // Method - Gets call in a loop
     private void Update() {
 
-        if (transform.position.y > 10){
+        if (_birdWasLaunched &&
+            GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1) // very slowly movement
+        {
+            _timeSittingAround += Time.deltaTime;   // Frame/sec
+        }
+
+        // Reset to initial position if vertical pos > 10 or pos < -10.
+        // Reset to initial position if horizontal pos > 10 or pos < -10.
+        if (transform.position.y > _verticalUp ||
+            transform.position.y < _verticalDown ||
+            transform.position.x > _horizontalright ||
+            transform.position.x < _horizontalLeft ||
+            _timeSittingAround > _maxTimeSittingAround)
+        {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }
@@ -39,6 +65,8 @@ public class FatBird : MonoBehaviour // reuse Monobehaviour
         GetComponent<Rigidbody2D>().AddForce(directionToInitialPosition * _launchPower);
         // Reset to 1 gravity
         GetComponent<Rigidbody2D>().gravityScale =1;
+        // Set to true that bird is launched
+        _birdWasLaunched = true;
 
     }
 
