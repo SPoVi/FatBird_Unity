@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
+    [SerializeField] private GameObject _cloudParticlePrefab;
+
     // Method - Handle collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -14,6 +17,8 @@ public class Enemy : MonoBehaviour
 
         if (bird != null)
         {
+            // Cloud particles
+            Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
             return;
         }
@@ -28,6 +33,9 @@ public class Enemy : MonoBehaviour
         // Collision from the top. 0 for first collision.
         if (collision.contacts[0].normal.y < - 0.5)
         {
+            //Cloud particles
+            Instantiate(_cloudParticlePrefab, transform.position, Quaternion.identity);
+
             Destroy(gameObject);
         }
 
